@@ -32,8 +32,10 @@ Pre 0.1 (January 2015)
 
 TODO
 -------------
+* Add options functionality
 * Add auto/manual roll options
 * Add die roll 'animation' 
+* Add a statistical analysis mode
 
 
 Diceman Information
