@@ -20,9 +20,10 @@ Just run it!
 Read the README for more details
 """
 
+import sys
 from random import *   
 from math import *
-from time  import *
+from time import *
 
 
 countries = [
@@ -241,10 +242,23 @@ countries = [
     ]
 
 
+def rollDie(duration):
+    currentRoll = 0
+    for x in range(duration):
+	currentRoll = randint(1,6)
+	print '%d' % currentRoll,
+	sys.stdout.flush()
+	sleep(0.1)
+	print '\r',
+	sys.stdout.flush()
+    print ''
+    return currentRoll
+	
+
 def get_continent():
     sleep(1)
-    roll = randint(1,6)
-    print "Rolled %d which is %s" % (roll, countries[roll-1][0]) 
+    roll = rollDie(10) 
+    print "Rolled %d - %s" % (roll, countries[roll-1][0]) 
     return roll-1 
 
 
@@ -257,21 +271,23 @@ def get_country(candidate):
     while num_of_countries > 5:
         chunk = ceil(num_of_countries/6.0)
         sleep(1)
-        roll = randint(1, 6)
+        roll = rollDie(10) 
         while roll*chunk > num_of_countries:
-            print 'Rolled %d - rolling again.' % roll
-            roll = randint(1,6)
+            print 'Rolled %d - No match - rolling again.' % roll
+            roll = rollDie(10) 
         start_slice = int((chunk*roll)-chunk)
         end_slice = int(chunk*roll)
         country_candidates = country_candidates[start_slice:end_slice]
         num_of_countries = len(country_candidates)
-        print "Rolled %d which is %s" % (roll, ', '.join(country_candidates))
+        print "Rolled %d - %s" % (roll, ', '.join(country_candidates))
     sleep(1)
-    roll = randint(1,6)
+    roll = rollDie(5)
     while roll > num_of_countries:
-        roll = randint(1,6)
+        print 'Rolled %d - No match - rolling again.' % roll
+	roll = rollDie(10)
     country = country_candidates[roll-1]
-    print 'Rolled %d which is %s!' % (roll, country)
+    print 'Rolled %d' % roll
+    print 'Country %d is %s' % (candidate + 1, country)
     print ''
     return country
 
@@ -283,7 +299,7 @@ def get_country_choices():
 
 def final_decision(choices):
     print "Rolling for the final decision..."
-    roll = randint(1, 6)
+    roll = rollDie(20) 
     return choices[roll-1]
 
 
@@ -315,7 +331,6 @@ def main():
     choices = get_country_choices()
     print 'You are going to one of: ' + ', '.join(choices) + '...'
     destination = final_decision(choices)
-    sleep(5)
     print "Congratulations, you're going to %s!" % destination
 
 __version__ = '0.1'
